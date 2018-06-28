@@ -5,26 +5,45 @@ import API from "./utils/API";
 class App extends Component {
 
     state = {
-        value: ""
+        value: "",
+        pageContents: {}
     };
 
-    scrapeHome() {
+    scrapeHome = () => {
         API.scrapeHome()
         .then(res => {
-            console.log(res);
+            this.setState({pageContents: res.data});
+            console.log(this.state.pageContents);
         })
     };
 
     scrapeSection(section) {
         API.scrapeSection(section)
-        .then (res => {
-            console.log(res);
+        .then(res => {
+            this.setState({pageContents: res.data});
+            console.log(this.state.pageContents);
+        })
+    };
+
+    viewSavedArticles() {
+        API.viewSaved()
+        .then(res => {
+            this.setState({pageContents: res.data});
+            console.log(this.state.pageContents);
+        })
+    };
+
+    viewSavedArticle(article) {
+        API.viewSpecificSaved(article)
+        .then(res => {
+            this.setState({pageContents: res.data});
+            console.log(this.state.pageContents);
         })
     };
 
     handleChange = event => {
         this.setState({value: event.target.value});
-    }
+    };
 
     handleSubmit = event => {
         event.preventDefault();
@@ -34,11 +53,12 @@ class App extends Component {
         else {
             this.scrapeSection(this.state.value);
         }
-    }
+    };
 
     render() {
         return (
             <div>
+                <span><button onClick={this.viewSavedArticles}>View saved articles</button></span>
                 <form onSubmit={this.handleSubmit}>
                     <label><span>NYT Section: </span>
                         <span><select value={this.state.value} onChange={this.handleChange}>
@@ -70,7 +90,7 @@ class App extends Component {
                 </form>
             </div>
         );
-    }
+    };
 }
 
 export default App;
