@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import API from "./utils/API";
+import Navbar from "./components/Navbar";
 
 class App extends Component {
 
@@ -10,18 +10,23 @@ class App extends Component {
     .then(res => {
       console.log(res);
     })
-  }
+  };
 
-  componentDidMount() {
-    this.scrapeHome();
-  }
+  scrapeSection(section) {
+    API.scrapeSection(section)
+    .then (res => {
+      console.log(res);
+    })
+  };
 
   render() {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>test</h2>
+          <Navbar
+          home = {this.scrapeHome}
+          section = {this.scrapeSection}
+          />
         </div>
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
